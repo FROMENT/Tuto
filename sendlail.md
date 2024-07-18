@@ -1,3 +1,11 @@
+Voici un exemple de script VBA pour envoyer des emails avec une pièce jointe :
+
+	1.	Ouvrez Excel et accédez à l’éditeur VBA :
+	•	Appuyez sur Alt + F11 pour ouvrir l’éditeur VBA.
+	•	Insérez un nouveau module en allant dans Insertion > Module.
+	2.	Collez le script VBA suivant dans le module :
+
+
 Sub SendEmails()
     Dim OutlookApp As Object
     Dim OutlookMail As Object
