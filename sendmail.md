@@ -14,6 +14,7 @@ Sub SendEmails()
     Dim MailRD As String
     Dim MailBCC As String
 
+
     ' Définir la feuille "LISTE MAIL"
     Set WS = ThisWorkbook.Sheets("LISTE MAIL")
 
