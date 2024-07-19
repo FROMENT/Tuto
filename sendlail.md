@@ -1,26 +1,22 @@
-Voici un exemple de script VBA pour envoyer des emails avec une pièce jointe :
-
-	1.	Ouvrez Excel et accédez à l’éditeur VBA :
-	•	Appuyez sur Alt + F11 pour ouvrir l’éditeur VBA.
-	•	Insérez un nouveau module en allant dans Insertion > Module.
-	2.	Collez le script VBA suivant dans le module :
-
-
 Sub SendEmails()
     Dim OutlookApp As Object
     Dim OutlookMail As Object
     Dim i As Integer
-    Dim LastRow As Long
+    Dim LastRowListEmail As Long
+    Dim LastRowMailRD As Long
     Dim MailBody As String
-    Dim AttachmentPath As String
     Dim HtmlFilePath As String
     Dim HtmlFile As Integer
     Dim HtmlContent As String
     Dim LineOfText As String
+    Dim DocumentLink As String
+    Dim WS As Worksheet
+    Dim MailRD As String
+    Dim MailBCC As String
 
-    ' Définir le chemin de la pièce jointe
-    AttachmentPath = "C:\chemin\vers\la\piece_jointe.pdf" ' Modifier avec le chemin réel
-    
+    ' Définir la feuille "LISTE MAIL"
+    Set WS = ThisWorkbook.Sheets("LISTE MAIL")
+
     ' Définir le chemin du fichier HTML
     HtmlFilePath = "C:\chemin\vers\texteairefweb.html" ' Modifier avec le chemin réel
 
@@ -34,8 +30,24 @@ Sub SendEmails()
     Loop
     Close HtmlFile
 
-    ' Définir le dernier rang de données dans la colonne A
-    LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    ' Définir le lien vers le document
+    DocumentLink = "http://www.example.com/document.pdf" ' Modifier avec le lien réel
+
+    ' Définir le dernier rang de données dans le tableau TABLEListemail
+    LastRowListEmail = WS.ListObjects("TABLEListemail").ListRows.Count
+
+    ' Définir le dernier rang de données dans le tableau TABLEMailRD
+    LastRowMailRD = WS.ListObjects("TABLEMailRD").ListRows.Count
+
+    ' Construire la liste des responsables de domaine
+    MailRD = ""
+    For i = 1 To LastRowMailRD
+        If MailRD = "" Then
+            MailRD = WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
+        Else
+            MailRD = MailRD & ";" & WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
+        End If
+    Next i
 
     ' Créer une instance d'Outlook
     On Error Resume Next
@@ -45,17 +57,24 @@ Sub SendEmails()
     End If
     On Error GoTo 0
 
-    ' Boucler à travers chaque ligne de données
-    For i = 2 To LastRow
+    ' Boucler à travers chaque ligne de données dans TABLEListemail
+    For i = 1 To LastRowListEmail
         ' Créer un nouvel email
         Set OutlookMail = OutlookApp.CreateItem(0)
 
+        ' Remplacer les espaces réservés dans le contenu HTML
+        MailBody = Replace(HtmlContent, "[NOM]", WS.ListObjects("TABLEListemail").DataBodyRange(i, 2).Value)
+        MailBody = Replace(MailBody, "[LINK]", DocumentLink)
+        
+        ' Lire l'adresse email du destinataire en copie cachée
+        MailBCC = WS.ListObjects("TABLEListemail").DataBodyRange(i, 3).Value
+
         ' Configurer l'email
         With OutlookMail
-            .To = Cells(i, 3).Value
+            .To = MailRD ' Adresses des responsables de domaine
+            .BCC = MailBCC ' Adresses des destinataires en copie cachée
             .Subject = "Referencement Webservice - Collecte Initiale"
-            .HTMLBody = HtmlContent
-            .Attachments.Add AttachmentPath
+            .HTMLBody = MailBody
             .Send
         End With
     Next i
