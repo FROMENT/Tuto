@@ -1,16 +1,23 @@
 Option Explicit
 
-' Déclaration des fonctions SQLite externes
-Private Declare Function sqlite3_open Lib "sqlite3.dll" (ByVal dbName As String, ByRef db As Long) As Long
-Private Declare Function sqlite3_close Lib "sqlite3.dll" (ByVal db As Long) As Long
-Private Declare Function sqlite3_exec Lib "sqlite3.dll" (ByVal db As Long, ByVal sql As String, ByVal callback As Long, ByVal arg As Long, ByRef errmsg As Long) As Long
-
 ' Fonction pour valider l'adresse email
 Function IsValidEmail(email As String) As Boolean
     Dim regex As Object
     Set regex = CreateObject("VBScript.RegExp")
     regex.Pattern = "^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
     IsValidEmail = regex.Test(email)
+End Function
+
+' Fonction pour vérifier les doublons dans une collection
+Function IsUniqueEmail(email As String, emailCollection As Collection) As Boolean
+    Dim item As Variant
+    IsUniqueEmail = True
+    For Each item In emailCollection
+        If item = email Then
+            IsUniqueEmail = False
+            Exit Function
+        End If
+    Next item
 End Function
 
 Sub SendEmails()
@@ -31,6 +38,10 @@ Sub SendEmails()
     Dim MailBCC As String
     Dim BCCGroup As String
     Dim GroupSize As Integer
+    Dim emailCollection As Collection
+    
+    ' Initialiser la collection d'emails
+    Set emailCollection = New Collection
     
     ' Définir la feuille "LISTE MAIL"
     Set WS = ThisWorkbook.Sheets("LISTE MAIL")
@@ -61,10 +72,13 @@ Sub SendEmails()
     MailRD = ""
     For i = 1 To LastRowMailRD
         If IsValidEmail(WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value) Then
-            If MailRD = "" Then
-                MailRD = WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
-            Else
-                MailRD = MailRD & ";" & WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
+            If IsUniqueEmail(WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value, emailCollection) Then
+                emailCollection.Add WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
+                If MailRD = "" Then
+                    MailRD = WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
+                Else
+                    MailRD = MailRD & ";" & WS.ListObjects("TABLEMailRD").DataBodyRange(i, 1).Value
+                End If
             End If
         End If
     Next i
@@ -87,12 +101,15 @@ Sub SendEmails()
         ' Lire l'adresse email du destinataire en copie cachée
         MailBCC = WS.ListObjects("TABLEListemail").DataBodyRange(i, 3).Value
         If IsValidEmail(MailBCC) Then
-            If BCCGroup = "" Then
-                BCCGroup = MailBCC
-            Else
-                BCCGroup = BCCGroup & ";" & MailBCC
+            If IsUniqueEmail(MailBCC, emailCollection) Then
+                emailCollection.Add MailBCC
+                If BCCGroup = "" Then
+                    BCCGroup = MailBCC
+                Else
+                    BCCGroup = BCCGroup & ";" & MailBCC
+                End If
+                j = j + 1
             End If
-            j = j + 1
         End If
         
         ' Envoyer l'email lorsque le groupe est complet ou que c'est le dernier email
