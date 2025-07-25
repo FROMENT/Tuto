@@ -1,3 +1,43 @@
+# 📧 Générateur de compte-rendu cybersécurité (.eml) Outlook – Mistral + Continue
+
+## 🎯 Objectif
+
+Ce projet permet de générer automatiquement des emails `.eml` bilingues (FR/EN) depuis une transcription ou un résumé de réunion cybersécurité.  
+Il est optimisé pour une audience mixte : **executives, CISO et responsables applicatifs**.  
+Le compte-rendu est structuré, professionnel, compatible avec **Outlook**, et contient des **smart icons Unicode** pour faciliter la lecture rapide.
+
+---
+
+## ✅ Prérequis
+
+- Plugin **Continue** installé dans **VSCode**
+- Modèle IA **Mistral** (local ou via API OpenRouter/LM Studio)
+- Dossier `./.continue/prompts/` disponible dans votre projet
+- Optionnel : Thunderbird ou Outlook pour tester les fichiers `.eml`
+
+---
+
+## 📂 Fichiers
+
+- `cr_cyber_eml_multiniveau.yaml` → Prompt IA structuré pour Continue
+- `README.md` → Ce fichier
+
+---
+
+## ⚙️ Installation
+
+1. **Créer le dossier s’il n’existe pas** :
+
+
+
+
+
+
+
+
+
+
+
 name: CR cybersécurité Outlook (.eml) – audience 3 niveaux
 description: Génère un email HTML bilingue structuré (FR/EN) lisible dans Outlook, avec contenu stratégiquement adapté à trois niveaux d’audience : exécutifs, RSSI, responsables applicatifs.
 prompt: |
