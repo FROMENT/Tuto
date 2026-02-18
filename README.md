@@ -1,30 +1,51 @@
-# Tuto
-Tuto divers (starter) 
-# 🛠️ Tuto Divers – Boîte à outils Pascal
+# Tuto — Dépôt réorganisé
 
-Collection de tutoriels, scripts et notes techniques (VBA, Python, Docker, Ollama, CI/CD, Jira…).
+Ce dépôt regroupe des ressources de démonstration (documentation, scripts VBA, exemples Python/YAML et éléments Docker) avec une structure claire et maintenable.
 
-## 📁 Structure du dépôt
-- `vba/` → Macros Outlook/Excel
-- `python/` → Scripts Fortify, setup, etc.
-- `docker/` → docker-compose + scripts Ollama
-- `docs/` → Tous les .md
-- `scripts/` → Shell divers
+## Structure
 
-## 🚀 Scripts principaux
+```text
+.
+├── docs/      # Documentation Markdown
+├── vba/       # Macros et scripts VBA
+├── python/    # Scripts Python et jeux de configuration YAML
+├── docker/    # Stack Docker, scripts d'initialisation et doc associée
+├── LICENSE
+└── README.md
+```
 
-### Docker + Ollama
-- `docker-compose.yml` → Ollama + Open WebUI + Watchtower
-- `update_ollama_webui.sh` → Mise à jour en 1 clic
-- `get.sh` → Téléchargement modèles légers M1/M2
+## Utilisation rapide
 
-### VBA Emailing
-- `sendmail.vba` → Envoi en masse avec HTML + pièces jointes depuis tableaux Excel
+### 1) Documentation
+- Consultez les guides dans `docs/`.
+- Les anciens fichiers mal nommés ont été corrigés (ex: `contrat.hml` → `docs/contrat.md`).
 
-### Python
-- `demo.py` → Rapport hebdo vulnérabilités Fortify → CSV
-
-## Installation rapide
+### 2) Python
 ```bash
-git clone https://github.com/FROMENT/Tuto.git
-cd Tuto
+python3 python/demo.py
+```
+
+### 3) Docker
+```bash
+cd docker
+./get.sh
+```
+
+Le script `docker/get.sh` valide les prérequis et lance la stack définie dans `docker/docker-compose.yml`.
+
+## Conventions de contenu
+
+- **Documentation** : tous les fichiers `.md` (hors README racine) sont centralisés dans `docs/`.
+- **VBA** : tous les `.vba` sont dans `vba/`.
+- **Python/YAML** : scripts et configurations de démonstration sont dans `python/`.
+- **Docker** : orchestration et scripts systèmes dans `docker/`.
+
+## Objectif de cette réorganisation
+
+- Améliorer la lisibilité du dépôt.
+- Réduire le bruit à la racine.
+- Faciliter l'onboarding et l'automatisation CI/CD.
+
+## Licence
+
+Voir le fichier `LICENSE`.
