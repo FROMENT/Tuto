@@ -1,30 +1,81 @@
 # Tuto
-Tuto divers (starter) 
-# 🛠️ Tuto Divers – Boîte à outils Pascal
 
-Collection de tutoriels, scripts et notes techniques (VBA, Python, Docker, Ollama, CI/CD, Jira…).
+Boîte à outils technique regroupant des scripts et notes pratiques autour de **VBA**, **Python**, **Docker**, **CI/CD** et divers sujets d'automatisation.
 
-## 📁 Structure du dépôt
-- `vba/` → Macros Outlook/Excel
-- `python/` → Scripts Fortify, setup, etc.
-- `docker/` → docker-compose + scripts Ollama
-- `docs/` → Tous les .md
-- `scripts/` → Shell divers
+## Structure du dépôt
 
-## 🚀 Scripts principaux
+```text
+.
+├── docker/   # Stack Docker/Ollama + scripts shell et notes associées
+├── docs/     # Documentation technique et tutoriels Markdown
+├── python/   # Scripts Python et configurations YAML
+├── vba/      # Macros VBA (Outlook, Excel, Word)
+├── LICENSE
+└── README.md
+```
 
-### Docker + Ollama
-- `docker-compose.yml` → Ollama + Open WebUI + Watchtower
-- `update_ollama_webui.sh` → Mise à jour en 1 clic
-- `get.sh` → Téléchargement modèles légers M1/M2
+## Utilisation rapide
 
-### VBA Emailing
-- `sendmail.vba` → Envoi en masse avec HTML + pièces jointes depuis tableaux Excel
+### 1) Cloner le dépôt
 
-### Python
-- `demo.py` → Rapport hebdo vulnérabilités Fortify → CSV
-
-## Installation rapide
 ```bash
 git clone https://github.com/FROMENT/Tuto.git
 cd Tuto
+```
+
+### 2) Démarrer la stack Docker (Ollama + Open WebUI)
+
+Depuis la racine du dépôt :
+
+```bash
+docker compose -f docker/docker-compose.yml up -d
+```
+
+Services exposés :
+- **Open WebUI** : http://localhost:3000
+- **Ollama API** : http://localhost:11434
+
+### 3) Télécharger des modèles Ollama recommandés
+
+```bash
+./docker/get.sh
+```
+
+> Le script détecte automatiquement si `ollama` est disponible en local, sinon il utilise le conteneur `ollama` (si démarré).
+
+## Détails par dossier
+
+### `docs/`
+Contient les notes et tutoriels (Jira, CI/CD, pagination, SDK, mail, Spring, etc.).
+
+### `vba/`
+Contient les macros VBA pour automatiser des envois mail et documents Office.
+
+### `python/`
+Contient :
+- `demo.py` (script Python de démonstration),
+- des fichiers YAML de configuration (`expertsset*.yaml`, `myprompts.yaml`, etc.).
+
+### `docker/`
+Contient :
+- `docker-compose.yml` : stack locale prête à l'emploi,
+- `get.sh` : téléchargement automatisé de modèles Ollama,
+- `update_ollama_webui.sh` : script de mise à jour,
+- `createdocker.md` : notes Docker/Artifactory.
+
+## Prérequis
+
+- Git
+- Docker + Docker Compose plugin
+- (optionnel) Ollama CLI installé localement
+
+## Bonnes pratiques
+
+- Conserver les tutoriels dans `docs/`.
+- Ajouter les scripts shell liés à la stack dans `docker/`.
+- Ajouter les macros Office dans `vba/`.
+- Ajouter les scripts Python/configs dans `python/`.
+
+## Licence
+
+Ce projet est distribué sous la licence présente dans le fichier `LICENSE`.
