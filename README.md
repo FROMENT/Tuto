@@ -49,3 +49,4 @@ Le script `docker/get.sh` valide les prérequis et lance la stack définie dans 
 ## Licence
 
 Voir le fichier `LICENSE`.
+0d62d937efe06bf563d02ba0d23680be10f7fb81
