@@ -1,18 +1,16 @@
 #!/bin/zsh
+# Liste des modèles légers pour Mac M1/M2 16 Go
 
-# Liste des modèles adaptés à un Mac M1 Pro avec 16 Go de RAM
 MODELS=(
   "deepseek-coder:6.7b-instruct"
   "codellama:7b"
   "openhermes:2.5b"
-  "llama4:17b"
+  "llama3.2:3b"          # remplacé llama4 inexistant
 )
 
-echo "🚀 Téléchargement des modèles via Ollama..."
-
+echo "📥 Téléchargement des modèles via Ollama..."
 for model in "${MODELS[@]}"; do
-  echo "📥 Téléchargement de $model..."
-  ollama pull "$model"
+  echo "→ $model"
+  ollama pull "$model" || echo "❌ Erreur sur $model"
 done
-
-echo "✅ Tous les modèles ont été téléchargés avec succès."
+echo "✅ Tous les modèles téléchargés !"
